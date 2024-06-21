@@ -1,5 +1,5 @@
 body {
-    background-image: url(pic/meadow.jpeg);
+    background-image: url(pic/nighttimebig.gif);
     background-repeat: no-repeat;
     background-size: cover;
     color: white;
@@ -108,12 +108,13 @@ p, h1, h3 {
 }
 
 .enemymodel img {
-    max-width: 20vh;
+    max-width: 25vh;
     max-height: auto;
-    min-width: 20vh;
+    min-width: 25vh;
     min-height: auto;
     border-radius: 15px;
     padding: 10px;
+    margin-bottom: 10vh;
 }
 
 .enemymodel img.bigger {

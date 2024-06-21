@@ -213,6 +213,7 @@ document.getElementById("fireball").onclick = function() {
 
 document.getElementById("frog").onclick = function() {
     healthbar = 1;
+    prevenemy = document.getElementById("enemysprite").src;
     document.getElementById("enemysprite").src = 'pic/frog.png';
     document.getElementById("enemyhealth").textContent = Math.trunc(healthbar);
 }
