@@ -1,5 +1,5 @@
 body {
-    background-image: url(pic/nighttimebigt.png);
+    background-image: url(pic/meadow.jpeg);
     background-repeat: no-repeat;
     background-size: cover;
     color: white;
@@ -81,7 +81,7 @@ p, h1, h3 {
 }
 
 
-#enemyhealth {
+#healthbar {
     color: white;
     text-align: center;
     width: 59%;
@@ -224,7 +224,7 @@ p, h1, h3 {
         width: 60%;
     }
 
-    #enemyhealth {
+    #healthbar {
         width: 50%;
     }
 }
