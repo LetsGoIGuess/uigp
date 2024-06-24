@@ -7,12 +7,10 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-
-        
+    <div class="container"> 
         <!--left side-->
         <div class="left">
-
+            
             <div class="gold">
                 <h3 style="display: inline; margin-right: 0px;">Gold:</h3>
                 <h3 id="gold" style="display: inline; margin-left: 0px;">0</h3>
@@ -21,7 +19,6 @@
                 <h3 style="display: inline; margin-right: 0px;">Kill Count:</h3>
                 <h3 id="kills" style="display: inline; margin-left: 0px; color: red;">0</h3>
             </div>
-
 
             <div class="quests">
                 <h1 style="margin-bottom: 25px;">Quests</h1>
@@ -33,18 +30,15 @@
                     <h4 id="killsneeded"></h4>
                     <h4 id="questenemy"></h4>
 
-
-                    <span id="challenge">
-                        <p style="display: inline-block;" id="questenemyname"></p>
-                        <p style="display: inline-block;"> Killed: </p>
-                        <p style="display: inline-block;" id="questkills">0</p>
-                    </span>
+                    <div class="challenge">
+                        <p id="killed">Killed</p>
+                        <p id="questkills">0</p>
+                        <p id="questenemyname"></p>
+                    </div>
+                    
                 </div>
             </div>
-
-
         </div>
-        
         <!--all center divs-->
         <div class="center" id="enemy">
 
@@ -61,7 +55,7 @@
 
 
                 <p id="healthbar"></p>
-                <img id="enemysprite" src="pic/slime.gif" alt="Enemy Sprite">
+                <img id="enemysprite" src="pic\slime\slime.gif" alt="Enemy Sprite">
             </div>
         
             <div class="spells" id="spells">
@@ -92,7 +86,7 @@
         <div id="party"></div>
 
 
-        </div>
+    </div>
 
 
         <!-- 

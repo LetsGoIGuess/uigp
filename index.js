@@ -10,6 +10,7 @@ let kills = 0;
 let bossSpawned = false;
 let questcompleted = false;
 let enemyArray;
+let randomSlime = 0;
 
 // Load saved xp and gold from localStorage
 if (localStorage.getItem("xp")) {
@@ -25,6 +26,32 @@ if (localStorage.getItem("healthbar")) {
     previoushealthbar = parseInt(localStorage.getItem("previoushealthbar"), 10);
 }
 
+function enemyStringCleaner(text) {
+
+    let lastSlashPos = text.lastIndexOf('/');    
+    
+    // If the first slash is not found, return null
+    if (lastSlashPos === -1) {
+      return null;
+    }
+    
+    // Extract the substring starting from the first slash
+    let substring = text.substring(lastSlashPos + 1);
+    
+    // Find the position of the first period in the substring
+    let periodPos = substring.indexOf('.');
+    
+    // If the period is not found, return null
+    if (periodPos === -1) {
+      return null;
+    }
+    
+    // Extract the desired string
+    let result = substring.substring(0, periodPos).trim();
+    
+    return result;
+  }
+
 // Update the DOM with saved values
 document.getElementById("xp").textContent = xp;
 document.getElementById("gold").textContent = gold;
@@ -33,28 +60,36 @@ document.getElementById("healthbar").textContent = healthbar;
 
 // Background areas
 const areas = [
-    'pic/meadow.jpeg',
-    'pic/forest.jpeg',
-    'pic/sewer.jpg'
+    'pic/backgrounds/meadow.jpeg',
+    'pic/backgrounds/sewer.png',
+    'pic/backgrounds/forest.png'
 ];
 
 // Enemies for quests
 const questenemies = [
-    'pic/slime.gif',
-    'pic/gobby.gif'
+    'pic/slime/slime.gif',
+    'pic/enemies/gobby.gif'
 ];
 
 // Enemies for quests
 const bossenemies = [
-    'pic/slime.gif',
-    'pic/gobby.gif'
+    'pic/slime/slimesword.gif'
 ]
+
+//mob variations
+const slimeEnemies = ['pic/slime/black_slime.gif',
+    'pic/slime/blue_slime.gif',
+    'pic/slime/orange_slime.gif',
+    'pic/slime/pink_slime.gif',
+    'pic/slime/purple_slime.gif',
+    'pic/slime/red_slime.gif',
+    'pic/slime/slime.gif',
+    'pic/slime/yellow_slime.gif' ]
 
 // Global object to store enemies for each area
 const enemies = {
-    meadowenemies: ['pic/slime.gif', 'pic/gobby.gif'],
-    sewerenemies: ['pic/rat.gif'],
-    allenemies: ['pic/rat.gif', 'pic/skel.gif', 'pic/skelhat.gif', 'pic/slimesword.gif', 'pic/slime.gif', 'pic/gobby.gif'],
+    meadowenemies: ['pic/enemies/gobby.gif', slimeEnemies[randomSlime]],
+    sewerenemies: ['pic/enemies/rat.gif']
 };
 
 function getrandomenemy() {
@@ -66,7 +101,7 @@ function getrandomenemy() {
         currentarea = currentarea.slice(currentarea.indexOf('url(') + 4, currentarea.indexOf(')'));
     }
     
-    let currentareasub = currentarea.substring(currentarea.lastIndexOf('pic/') + 4); //get only the chars after pic/
+    let currentareasub = currentarea.substring(currentarea.lastIndexOf('pic/backgrounds') + 16); //get only the chars after pic/
     currentareasub = currentareasub.substring(0, currentareasub.lastIndexOf('.')); //remove the file extension
     
     let enemyindex = currentareasub + 'enemies';
@@ -134,6 +169,10 @@ function enemyClickHandler() {
 
 //function to handle enemy defeat
 function handleEnemyDefeat() {
+    
+    randomSlime = Math.floor(Math.random() * slimeEnemies.length);
+    enemies.meadowenemies.push(slimeEnemies[randomSlime], 'pic/enemies/gobby.gif');
+    
     if (healthbar <= 0) {
         previoushealthbar *= 1.05;
         localStorage.setItem("healthbar", healthbar);
@@ -142,7 +181,7 @@ function handleEnemyDefeat() {
 
         //call quests function and store enemy sprite that was killed.
         let prevenemy = document.getElementById("enemysprite").src;
-        let prevenemysub = prevenemy.substring(prevenemy.indexOf('pic')); // This just changes to the relative path
+        let prevenemysub = enemyStringCleaner(prevenemy);
         quests(prevenemysub);
 
         //check if a quest has been completed and spawn a bigger enemy if needed
@@ -179,8 +218,7 @@ function handleEnemyDefeat() {
 
 //function to spawn a bigger enemy with more health
 function spawnBiggerEnemy() {
-    console.log("Spawning a bigger enemy");
-    const biggerEnemy = 'pic/slimesword.gif'; // Replace with the path to your bigger enemy sprite
+    const biggerEnemy = 'pic/slime/slimesword.gif'; // Replace with the path to your bigger enemy sprite
     let bosshealthbar = previoushealthbar*2; // Increase health significantly for the bigger enemy
     healthbar = bosshealthbar;
 
@@ -203,27 +241,26 @@ function quests(enemy) {
     questcompleted = false;
     let killsneeded = Math.ceil(prevkillsneeded * 1.5);
     document.getElementById("killsneeded").textContent = killsneeded;
-
     // Ensure questenemy is set based on questscomplete
     if (questscomplete < questenemies.length) {
-        questenemy = questenemies[questscomplete];
-    } else {
+        questenemy = enemyStringCleaner(questenemies[questscomplete]);
+    } 
+    else {
         questenemy = undefined;
     }
 
     if (questenemy === undefined) {
         questscomplete = 0;
-        questenemy = questenemies[questscomplete]; // Reset to the first enemy
+        questenemy = enemyStringCleaner(questenemies[questscomplete]); // Reset to the first enemy
     }
 
-    let questenemyName = questenemy.substring(questenemy.indexOf('pic/') + 4);
-    questenemyName = questenemyName.substring(0, questenemyName.lastIndexOf('.'));
-    document.getElementById("questenemy").textContent = questenemyName + "s";
-    document.getElementById("questenemyname").textContent = questenemyName;
+    document.getElementById("questenemy").textContent = questenemy + "s";
+    document.getElementById("questenemyname").textContent = questenemy + "s";
+    document.getElementById("questkills").textContent = questkill;
+    document.getElementById("questnum").textContent = "#" + Number(questscomplete+1) + ": ";
+    let questEnemyContain = enemy.includes(questenemy);
 
-    document.getElementById("questnum").textContent = "#" + questnum + ": ";
-
-    if (questenemy === enemy) {
+    if (questEnemyContain === true) {
         questkill++;
         document.getElementById("questkills").textContent = questkill;
     }

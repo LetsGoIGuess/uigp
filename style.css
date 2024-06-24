@@ -1,5 +1,5 @@
 body {
-    background-image: url(pic/meadow.jpeg);
+    background-image: url(pic/backgrounds/meadow.jpeg);
     background-repeat: no-repeat;
     background-size: cover;
     color: white;
@@ -7,11 +7,6 @@ body {
     padding: 0;
     font-family: Alhkemikal;
     text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-}
-
-
-p, h1, h3 {
-    margin: 1vh;
 }
 
 .container {
@@ -54,19 +49,22 @@ p, h1, h3 {
     background-color: #B88566;
     border-radius: 15px;
     height: fit-content;
+    padding-left: 1vh;
 }
 
 
 .quest-box, #quest, #questnum, #killsneeded, #questenemy{
-    padding-left: 1vh;
     margin-top: -20px;
     font-size: 20px;
-    margin-left: -2px;
+    margin-left: 0px;
+    margin-right: 0px;
     display: inline-block;
 }
 
-#challenge{
+
+.challenge, #questenemyname, #questkills, #killed{
     display: inline-block;
+    margin-top: 0px;
     font-size: 17px;
 }
 
@@ -109,8 +107,6 @@ p, h1, h3 {
 
     background-size: cover;
     background-position: center;
-    /* background-image: url(pic/sewer.jpg); */
-
     border-radius: 15px;
     padding: 10px;
 }
@@ -181,6 +177,7 @@ p, h1, h3 {
 }
 
 #party{
+    padding-left: 1vh;
     width: 90%;
     min-width: 150px;
     min-height: 30%;
@@ -189,16 +186,6 @@ p, h1, h3 {
     border: 3px solid rgb(79, 0, 0);
     height: 150px;
     margin-bottom: 13%;
-}
-
-#party{
-    width: 90%;
-    min-width: 150px;
-    min-height: 30%;
-    border-radius: 15px;
-    background-color: #B88566;
-    border: 3px solid rgb(79, 0, 0);
-    height: 150px;
 }
 
 /* Media Queries */
