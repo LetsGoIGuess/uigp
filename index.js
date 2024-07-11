@@ -11,6 +11,8 @@ let bossSpawned = false;
 let questcompleted = false;
 let enemyArray;
 let randomSlime = 0;
+let xpNeeded = 50;
+let level = 1;
 
 // Load saved xp and gold from localStorage
 if (localStorage.getItem("xp")) {
@@ -25,7 +27,12 @@ if (localStorage.getItem("healthbar")) {
 if (localStorage.getItem("healthbar")) {
     previoushealthbar = parseInt(localStorage.getItem("previoushealthbar"), 10);
 }
+if (localStorage.getItem("playerdamage")) {
+    playerdamage = parseInt(localStorage.getItem("playerdamage"), 10);
+}
 
+
+//removes all chars after the last / and removes all chars after the first .
 function enemyStringCleaner(text) {
 
     let lastSlashPos = text.lastIndexOf('/');    
@@ -52,11 +59,21 @@ function enemyStringCleaner(text) {
     return result;
   }
 
-// Update the DOM with saved values
+  // Update the DOM with saved values
 document.getElementById("xp").textContent = xp;
 document.getElementById("gold").textContent = gold;
 document.getElementById("healthbar").textContent = healthbar;
 
+function levelUp(lvlxp){
+    if(lvlxp >= xpNeeded){
+        level++;
+        playerdamage++;
+        xp = 0;
+        xpNeeded *= 1.05;
+        xpNeeded = Math.trunc(xpNeeded);
+        document.getElementById("level").textContent = level;
+    }
+}
 
 // Background areas
 const areas = [
@@ -137,7 +154,7 @@ function calccritchance() {
 function enemyClickHandler() {
     if (healthbar > 0) {
         const crithit = calccritchance();
-
+        localStorage.setItem("playerdamage", playerdamage);
         //if the critical hit chance succeeds, we multiply the playerdamage variable
         if (crithit) {
             document.getElementById("crittext").style.visibility = "visible";
@@ -205,7 +222,8 @@ function handleEnemyDefeat() {
 
         //player gains xp
         xp += Math.trunc(Math.random() * 3) + 1;
-        document.getElementById("xp").textContent = xp;
+        levelUp(xp);
+        document.getElementById("xp").textContent = xp + "/" + xpNeeded;
 
         //save xp to localStorage
         localStorage.setItem("xp", xp);
@@ -257,6 +275,7 @@ function quests(enemy) {
     document.getElementById("questenemy").textContent = questenemy + "s";
     document.getElementById("questenemyname").textContent = questenemy + "s";
     document.getElementById("questkills").textContent = questkill;
+    document.getElementById("challengekillsneeded").textContent = killsneeded;
     document.getElementById("questnum").textContent = "#" + Number(questscomplete+1) + ": ";
     let questEnemyContain = enemy.includes(questenemy);
 
@@ -280,6 +299,7 @@ document.getElementById("enemysprite").onclick = enemyClickHandler;
 
 document.getElementById("fireball").onclick = function() {
     healthbar -= 50;
+    handleEnemyDefeat();
     document.getElementById("healthbar").textContent = Math.trunc(healthbar);
 }
 
@@ -288,4 +308,35 @@ document.getElementById("frog").onclick = function() {
     prevenemy = document.getElementById("enemysprite").src;
     document.getElementById("enemysprite").src = 'pic/frog.png';
     document.getElementById("healthbar").textContent = Math.trunc(healthbar);
+}
+
+//function for delay in loop for poison spells
+function waitforme(ms){
+
+    return new Promise (resolve =>{
+
+        setTimeout(()=> {resolve('')}, ms);
+    })
+}
+
+async function printy(healthbar){
+
+    for(let i = 0; i < 3; i++){
+        
+        if(healthbar <= 0){
+            i == 3;
+            return healthbar;
+        }
+
+        await waitforme(500);
+        healthbar -= 25;
+        document.getElementById("healthbar").textContent = Math.trunc(healthbar);   
+    }
+
+    return healthbar;
+}
+
+
+document.getElementById("poison").onclick = function(){
+    document.getElementById("healthbar").textContent = printy(healthbar);
 }
