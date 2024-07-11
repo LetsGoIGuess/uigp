@@ -38,6 +38,7 @@ body {
     font-size: 4vh;
     color: white;
     padding: 1vh;
+    z-index: 2;
 }
 
 #tutorial-button{
@@ -73,15 +74,6 @@ body {
     background-size: cover;
     background-position: center;
     background-image: url('pic/manuscript.png');
-    border-radius: 15px;
-    padding: 10px;
-}
-
-.heroslot img {
-    max-width: 20vh;
-    max-height: 25vh;
-    min-width: 20vh;
-    min-height: auto;
     border-radius: 15px;
     padding: 10px;
 }
@@ -148,4 +140,45 @@ to {opacity: 1;}
 @keyframes fadeIn {
 from {opacity: 0;}
 to {opacity:1 ;}
+}
+
+.container {
+    position: relative;
+    height: 20vh;
+    width: 40%;
+    margin: 4vh;
+}
+
+.layer1 {
+    width: 23vh;
+    position: absolute;
+    display: flex;
+    z-index: 0;
+}
+
+.layer2 {
+    width: 35vh;
+    position: absolute;
+    top: -11.4vh;
+    left: -6.1vh;
+    display: flex;
+    z-index: 2;
+}
+
+.layer3 {
+    width: 23vh;
+    position: absolute;
+    display: flex;
+    z-index: 1;
+}
+
+.layer4 {
+    width: 24vh;
+    position: absolute;
+    display: flex;
+    z-index: 1;
+}
+
+.temp{
+    width: 25vh;
 }

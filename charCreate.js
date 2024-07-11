@@ -1,3 +1,14 @@
+document.addEventListener("DOMContentLoaded", function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const selectedSlot = urlParams.get('slot');
+
+    if (selectedSlot) {
+        localStorage.setItem('selectedSlot', selectedSlot);
+        console.log(selectedSlot);
+    }
+});
+
+
 const options = {
     hair: ["Side part black", "Side part blonde", "Side part blue", "Side part brown", "Side part green", "Side part orange", "Side part pink", "Side part purple", "Side part red", "Side part silver", "Side part white", 
         "Messy black", "Messy blonde", "Messy blue", "Messy brown", "Messy green", "Messy orange", "Messy pink", "Messy purple", "Messy red", "Messy silver", "Messy white", 
@@ -13,6 +24,14 @@ const options = {
     ],
     mouth: ["-", "3 rotated", "3 upside down", "dimple", "dot", "frown", "open mouth", "smile", "smirk", "snicker", "tongue", "two teeth"],
     body: ["Pasty", "White", "Pale", "Orange", "Tan", "Brown", "Dark Brown", "Red", "Green", "Blue", "Purple", "Olive"],
+};
+
+let selections = {
+    body: "",
+    hair: "",
+    eyebrows: "",
+    eyes: "",
+    mouth: ""
 };
 
 function openModal(category) {
@@ -57,23 +76,64 @@ function selectOption(category, option) {
 
     switch (category) {
         case 'body':
-            document.getElementById("body").src = `pic/character/body/${option.replace(/\s/g, '_').toLowerCase()}.png`;
+            elementId = 'body';
+            filePath = `pic/character/body/${option.replace(/\s/g, '_').toLowerCase()}.png`;
             break;
         case 'hair':
-            document.getElementById("Hair").src = `pic/character/hair/${option.replace(/\s/g, '_').toLowerCase()}.png`;
+            elementId = 'Hair';
+            filePath = `pic/character/hair/${option.replace(/\s/g, '_').toLowerCase()}.png`;
             break;
         case 'eyebrows':
-            document.getElementById("Brows").src = `pic/character/brows/${option.replace(/\s/g, '_').toLowerCase()}.png`;
+            elementId = 'Brows';
+            filePath = `pic/character/brows/${option.replace(/\s/g, '_').toLowerCase()}.png`;
             break;
         case 'eyes':
-            document.getElementById("Eyes").src = `pic/character/eyes/${option.replace(/\s/g, '_').toLowerCase()}.png`;
+            elementId = 'Eyes';
+            filePath = `pic/character/eyes/${option.replace(/\s/g, '_').toLowerCase()}.png`;
             break;
         case 'mouth':
-            document.getElementById("Mouth").src = `pic/character/mouth/${option.replace(/\s/g, '_').toLowerCase()}.png`;
+            elementId = 'Mouth';
+            filePath = `pic/character/mouth/${option.replace(/\s/g, '_').toLowerCase()}.png`;
             break;
+        default:
+            console.error("Invalid category");
+            return;
     }
+
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.src = filePath;
+        selections[category] = option; // Save the selection
+    } else {
+        console.error(`Element with ID ${elementId} not found`);
+    }
+
     closeModal();
 }
+
+function saveCharacter() {
+    const selectedSlot = localStorage.getItem('selectedSlot');
+    const selectedBody = document.getElementById("body").src;
+    const selectedHair = document.getElementById("Hair").src;
+    const selectedBrows = document.getElementById("Brows").src;
+    const selectedEyes = document.getElementById("Eyes").src;
+    const selectedMouth = document.getElementById("Mouth").src;
+    
+    const characterData = {
+        body: selectedBody,
+        hair: selectedHair,
+        brows: selectedBrows,
+        eyes: selectedEyes,
+        mouth: selectedMouth
+    };
+
+    localStorage.setItem(`slot${selectedSlot}Character`, btoa(JSON.stringify(characterData)));
+
+    window.location.href = "uigp.html";
+}
+
+document.getElementById("SaveChar").onclick = saveCharacter;
+
 
 window.onclick = function(event) {
     const modal = document.getElementById("modal");
