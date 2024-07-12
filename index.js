@@ -1,6 +1,6 @@
 let healthbar = 2;
 let previoushealthbar = 2;
-let playerdamage = 1;
+let playerdamage = 1000;
 let saveplayerdamage;
 let critchance = 1;
 let gold = 0;
@@ -13,6 +13,8 @@ let enemyArray;
 let randomSlime = 0;
 let xpNeeded = 50;
 let level = 1;
+let slot = false;
+
 
 // Load saved xp and gold from localStorage
 if (localStorage.getItem("xp")) {
@@ -26,9 +28,6 @@ if (localStorage.getItem("healthbar")) {
 }
 if (localStorage.getItem("healthbar")) {
     previoushealthbar = parseInt(localStorage.getItem("previoushealthbar"), 10);
-}
-if (localStorage.getItem("playerdamage")) {
-    playerdamage = parseInt(localStorage.getItem("playerdamage"), 10);
 }
 
 
@@ -75,6 +74,7 @@ function levelUp(lvlxp){
     }
 }
 
+
 // Background areas
 const areas = [
     'pic/backgrounds/meadow.jpeg',
@@ -106,7 +106,7 @@ const slimeEnemies = ['pic/slime/black_slime.gif',
 // Global object to store enemies for each area
 const enemies = {
     meadowenemies: ['pic/enemies/gobby.gif', slimeEnemies[randomSlime]],
-    sewerenemies: ['pic/enemies/rat.gif']
+    sewerenemies: ['pic/enemies/rat.gif', slimeEnemies[randomSlime]]
 };
 
 function getrandomenemy() {
@@ -154,7 +154,7 @@ function calccritchance() {
 function enemyClickHandler() {
     if (healthbar > 0) {
         const crithit = calccritchance();
-        localStorage.setItem("playerdamage", playerdamage);
+
         //if the critical hit chance succeeds, we multiply the playerdamage variable
         if (crithit) {
             document.getElementById("crittext").style.visibility = "visible";
@@ -186,7 +186,7 @@ function enemyClickHandler() {
 
 //function to handle enemy defeat
 function handleEnemyDefeat() {
-    
+
     randomSlime = Math.floor(Math.random() * slimeEnemies.length);
     enemies.meadowenemies.push(slimeEnemies[randomSlime], 'pic/enemies/gobby.gif');
     
@@ -201,6 +201,7 @@ function handleEnemyDefeat() {
         let prevenemysub = enemyStringCleaner(prevenemy);
         quests(prevenemysub);
 
+
         //check if a quest has been completed and spawn a bigger enemy if needed
         if (questcompleted === true) {
             spawnBiggerEnemy();
@@ -211,11 +212,30 @@ function handleEnemyDefeat() {
             document.getElementById("enemysprite").classList.remove('bigger'); // Remove the bigger class if it exists
         }
 
-        //player gains gold
-        goldgain = Math.trunc(Math.random() * 6) + 1;
-        gold += goldgain;
-        document.getElementById("gold").textContent = gold;
-        document.getElementById("goldgain").textContent = "Gold gained: +" + goldgain;
+        //player gains gold from enemy (non-slot)
+        if(slot == false){
+            goldgain = Math.trunc(Math.random() * 6) + 1;
+            gold += goldgain;
+            document.getElementById("gold").textContent = gold;
+            document.getElementById("goldgain").textContent = "Gold gained: +" + goldgain;
+        }
+
+        //player gains gold from beating slot machine
+        if(slot == true){
+            goldgain = 100;
+            gold += goldgain;
+            document.getElementById("gold").textContent = gold;
+            document.getElementById("goldgain").textContent = "Gold gained: +" + goldgain;
+            slot = false;
+
+            fireball = true;
+            document.getElementById("fireball").style.filter = "brightness(100%)";
+            frogs = true;
+            document.getElementById("frog").style.filter = "brightness(100%)";
+            strength = true;
+            document.getElementById("strength").style.filter = "brightness(100%)";
+        }
+
 
         //save gold to localStorage
         localStorage.setItem("gold", gold);
@@ -231,6 +251,7 @@ function handleEnemyDefeat() {
         //kill count increases
         kills += 1;
         document.getElementById("kills").textContent = kills;
+
     }
 }
 
@@ -247,6 +268,9 @@ function spawnBiggerEnemy() {
     document.getElementById("healthbar").textContent = Math.trunc(healthbar);
     bossSpawned = true; // indicate the boss has been spawned
 }
+
+
+
 
 let prevkillsneeded = 6.5;
 let questnum = 1;
@@ -294,49 +318,140 @@ function quests(enemy) {
     }
 }
 
+
+//set the spells to false
+let fireball = false;
+let frogs = false;
+let strength = false;
+let slots = false;
+
 // When the player clicks we run this function
 document.getElementById("enemysprite").onclick = enemyClickHandler;
 
-document.getElementById("fireball").onclick = function() {
-    healthbar -= 50;
-    handleEnemyDefeat();
-    document.getElementById("healthbar").textContent = Math.trunc(healthbar);
+
+
+if(fireball == false){
+    document.getElementById("fireball").style.opacity = "0.5";
 }
 
-document.getElementById("frog").onclick = function() {
-    healthbar = 1;
-    prevenemy = document.getElementById("enemysprite").src;
-    document.getElementById("enemysprite").src = 'pic/frog.png';
-    document.getElementById("healthbar").textContent = Math.trunc(healthbar);
+if(frogs == false){
+    document.getElementById("frog").style.opacity = "0.5";
 }
 
-//function for delay in loop for poison spells
-function waitforme(ms){
-
-    return new Promise (resolve =>{
-
-        setTimeout(()=> {resolve('')}, ms);
-    })
+if(strength == false){
+    document.getElementById("strength").style.opacity = "0.5";
 }
 
-async function printy(healthbar){
+if(slots == false){
+    document.getElementById("slot").style.opacity = "0.5";
+}
 
-    for(let i = 0; i < 3; i++){
-        
-        if(healthbar <= 0){
-            i == 3;
-            return healthbar;
+
+
+
+if(fireball == true)
+{
+    document.getElementById("fireball").style.filter = "brightness(100%)";
+
+    function fireballTrue(){
+        fireball = true;
+        document.getElementById("fireball").style.filter = "brightness(100%)";
+    }
+    
+    document.getElementById("fireball").onclick = function() {
+    
+        if(fireball == true){
+            healthbar -= 50;
+            handleEnemyDefeat();
+            document.getElementById("healthbar").textContent = Math.trunc(healthbar);
+            document.getElementById("fireball").style.filter = "brightness(60%)";
+            fireball = false;
+            setTimeout(fireballTrue, 5000); //cooldown for the fireball spell
         }
+    }
+}
 
-        await waitforme(500);
-        healthbar -= 25;
-        document.getElementById("healthbar").textContent = Math.trunc(healthbar);   
+
+
+if(frogs == true)
+{
+    document.getElementById("frog").style.filter = "brightness(100%)";
+
+    function frogTrue(){
+        frogs = true;
+        document.getElementById("frog").style.filter = "brightness(100%)";
+    }
+    
+    document.getElementById("frog").onclick = function() {
+    
+        if(frogs == true){
+            healthbar = 1;
+            prevenemy = document.getElementById("enemysprite").src;
+            document.getElementById("enemysprite").src = 'pic/frog.png';
+            document.getElementById("healthbar").textContent = Math.trunc(healthbar);
+            document.getElementById("frog").style.filter = "brightness(60%)";
+            frogs = false;
+            setTimeout(frogTrue, 5000); //cooldown for the frog spell
+        }
+    }
+}
+
+
+if(strength == true){
+
+    document.getElementById("strength").style.filter = "brightness(100%)";
+
+    //returns player damage to 1 after 10 seconds of using the strength potion
+    function strengthDone(){
+        document.getElementById("strength").style.filter = "brightness(100%)";
+        playerdamage = 1;
+}
+
+document.getElementById("strength").onclick = function() {
+
+    if(strength == true){
+        playerdamage = 5;
+        document.getElementById("strength").style.filter = "brightness(60%)";
+        strength = false;
+        setTimeout(strengthDone, 10000); //cooldown for the strength spell
+    }
+}
+}
+
+
+if(slots == true){
+    
+    document.getElementById("slot").style.filter = "brightness(100%)";
+
+    function slotTrue(){ //slot potion cooldown ready 
+        slots = true;
+        document.getElementById("slot").style.filter = "brightness(100%)";
     }
 
-    return healthbar;
+    document.getElementById("slot").onclick = function(){
+
+        if(slots == true){
+            healthbar = healthbar *= 1.5;
+            prevenemy = document.getElementById("enemysprite").src;
+            document.getElementById("enemysprite").src = 'pic/enemies/slot.gif';
+            document.getElementById("healthbar").textContent = Math.trunc(healthbar);
+            slot = true;
+            slots = false;
+            document.getElementById("slot").style.filter = "brightness(60%)";
+
+            //other spells are disabled (temporary)
+            if(slot == true){
+                fireball = false;
+                document.getElementById("fireball").style.filter = "brightness(60%)";
+                frogs = false;
+                document.getElementById("frog").style.filter = "brightness(60%)";
+                strength = false;
+                document.getElementById("strength").style.filter = "brightness(60%)";
+            }
+            }
+
+            setTimeout(slotTrue, 120000); //cooldown for the slot spell
+        }
+
 }
 
-
-document.getElementById("poison").onclick = function(){
-    document.getElementById("healthbar").textContent = printy(healthbar);
-}
