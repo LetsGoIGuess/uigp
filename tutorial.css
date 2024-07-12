@@ -22,7 +22,7 @@ p{
 }
 
 body {
-    background-image: url(pic/backgrounds/gameTut2.gif);
+    background-image: url(pic/backgrounds/gameTut3.gif);
     background-repeat: no-repeat;
     background-size: cover;
     color: white;
@@ -82,7 +82,7 @@ body {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, 225%);
+    transform: translate(-50%, 100%);
     border: 1px solid black;
     border-radius: 10px;
     z-index: 10;
@@ -99,7 +99,7 @@ body {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-75%, -360%);
+    transform: translate(-75%, -230%);
     border: 1px solid black;
     border-radius: 10px;
     z-index: 10;
@@ -116,7 +116,7 @@ body {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-75%, -130%);
+    transform: translate(-80%, -20%);
     border: 1px solid black;
     border-radius: 10px;
     z-index: 10;
@@ -150,7 +150,7 @@ body {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-35%, -90%);
+    transform: translate(-35%, -10%);
     border: 1px solid black;
     border-radius: 10px;
     z-index: 10;
@@ -167,7 +167,7 @@ body {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -250%);
+    transform: translate(-110%, -375%);
     border: 1px solid black;
     border-radius: 10px;
     z-index: 10;
