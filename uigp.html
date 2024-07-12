@@ -10,28 +10,34 @@
     <div class="container"> 
         <!--left side-->
         <div class="left">
+
+            <a href="index.html"><button id="submit" style="top: 0px; left: 0px; position: relative;">Title Screen</button></a><br>
             
             <div class="gold">
-                <h3 style="display: inline; margin-right: 0px;">Gold:</h3>
-                <h3 id="gold" style="display: inline; margin-left: 0px;">0</h3>
-                <p id="goldgain" style="color: white; margin-bottom: 20px;">Gold gained: +0</p>
-
-                <h3 style="display: inline; margin-right: 0px;">Kill Count:</h3>
-                <h3 id="kills" style="display: inline; margin-left: 0px; color: red;">0</h3>
+                <h1 style="padding-bottom: 0px; padding-top:10px; margin: 0px;">Stats</h1>
+                <p style="color: white; margin: 0px; padding: 0px; display: inline;">Gold:</p>
+                <p id="gold" style="color: white; margin: 0px; padding: 0px; display: inline;"></p>
+                <p id="goldgain" style="color: white; margin: 0px; padding: 0px;">Gold gained: +0</p>
+                <p style="display: inline; padding-right: 0px; margin-right: 0px; padding-left: 0px; margin-left: 0px;">Level:</p>
+                <p id="level" style="display: inline; padding-left: 0px; margin-left: 0px; padding-left: 0px; margin-left: 0px;">1</p><br>
+                <p style="display: inline; padding-right: 0px; margin-right: 0px; padding-left: 0px; margin-left: 0px;">XP:</p>
+                <p id="xp" style="display: inline; padding-left: 0px; margin-left: 0px;">0</p><br>
+                <p style="color: white; margin: 0px; padding: 0px; display: inline;">Kill Count:</p>
+                <p id="kills" style="margin: 0px; padding: 0px; color: red; display: inline;">0</p>
             </div>
 
             <div class="quests">
-                <h1 style="margin-bottom: 25px;">Quests</h1>
+                <h1 style="padding-bottom: 10px; padding-top:10px; margin: 0px;">Quests</h1>
                 <div class="quest-box">
-                    <h4><span id="quest">Quest</span> <span id="questnum"></span> <span id="quest">Kill</span> <span id="killsneeded"></span> <span id="questenemy"></span></h4>
+                    <p style="padding: 0x; margin: 0px;"><span id="quest">Quest</span> <span id="questnum"></span> <span id="quest">Kill</span> <span id="killsneeded"></span> <span id="questenemy"></span></p>
 
                     <div class="challenge">
-                        <p id="questenemyname"></p>
-                        <p style="display: inline;">: (</p>
-                        <p id="questkills">0</p>
-                        <p style="display: inline;">/</p>
-                        <p id="challengekillsneeded" style="display: inline;">10</p>
-                        <p style="display: inline;">)</p>
+                        <p id="questenemyname" style="padding: 0x; margin: 0px;"></p>
+                        <p style="display: inline; padding: 0x; margin: 0px;">: (</p>
+                        <p id="questkills" style="padding: 0x; margin: 0px;">0</p>
+                        <p style="display: inline; padding: 0x; margin: 0px;">/</p>
+                        <p id="challengekillsneeded" style="display: inline; padding: 0x; margin: 0px;">10</p>
+                        <p style="display: inline; padding: 0x; margin: 0px;">)</p>
                     </div>
 
                 </div>
@@ -39,13 +45,6 @@
         </div>
         <!--all center divs-->
         <div class="center" id="enemy">
-
-            <div id="menu">
-                <a href="index.html"><button id="submit">Title Screen</button></a>
-                <a href="uigp.html"><button id="submit">Main Menu</button></a>
-                <a href="uigp.html"><button id="submit">Save Game</button></a>
-            </div>
-
 
             <div class="enemymodel" id="enemymodel">
                 <p style="color: red; font-size: 4vh; visibility: hidden; -webkit-text-stroke: 1px rgb(255, 153, 153);" id="crittext">critical hit!</p>
@@ -60,19 +59,8 @@
         <!--all right divs-->
         <div class="right">
         
-        
-            <div id="party">
-                <h1 style="margin-top: 5px; margin-left: 35%;">Party</h1>
-                <h3 id="username">player</h3>
-                <p style="display: inline; padding-right: 0px; margin-right: 0px;">User #1 XP:</p>
-                <p id="xp" style="display: inline; padding-left: 0px; margin-left: 0px;">0</p><br>
-                <p style="display: inline; padding-right: 0px; margin-right: 0px;">Level:</p>
-                <p id="level" style="display: inline; padding-left: 0px; margin-left: 0px;">1</p>
-                
-            </div>
-    
             <div id="spells" class="spells">
-                <h1 style="margin-left: 35%; margin-top: 5px;">Spells</h1>
+                <h1>Spells</h1>
                 <!--fireball does damage-->
                 <img id="fireball" src="pic/fireball.jpg">
                 <!--turns them to frog-->
@@ -82,8 +70,14 @@
                 <!--double xp and gold-->
                 <img src="pic/richguy.png">
             </div>
-            
-            
+
+            <div id="party">
+                <h1>Shop</h1>
+                <p>Damage increase | 50 gold</p>
+                <p>Buy spell | 250 gold</p>
+                <p>Hire party member | 1000 gold</p>
+            </div>
+
             <!-- add minibar in the future for a quick added feature?
             <div class="minibar">
                 <button id="minibardmg">dmg</button>

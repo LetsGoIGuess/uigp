@@ -1,3 +1,9 @@
+@font-face {
+    font-family: Alhkemikal;
+    src: url("fonts/Alkhemikal.ttf");
+}
+
+
 body {
     background-image: url(pic/backgrounds/meadow.jpeg);
     background-repeat: no-repeat;
@@ -34,34 +40,44 @@ body {
 .gold{
     color: white;
     background-color: #B88566;
-    border: 3px solid #491D04;
+    border: 3px solid #271002;
     border-radius: 15px;
-    margin-bottom: 10vh;
-    padding: 2vh;
+    margin-bottom: 5vh;
+    padding-left: 1vh;
+    padding-bottom: 1vh;
+    padding-top: 0vh;
+    margin-top: 0vh;
+    font-size: x-large;
 }
 .gold #gold{
     color: gold;
 }
 
+.gold p{
+    padding: 30px;
+}
+
 .quests{
     color: white;
-    border: 3px solid #491D04;
+    border: 3px solid #271002;
     background-color: #B88566;
     border-radius: 15px;
     height: fit-content;
     padding-left: 1vh;
+    padding-bottom: 1vh;
+    font-size: x-large;
 }
 
 
 .quest-box, #quest, #questnum, #killsneeded, #questenemy{
     margin-top: -10px;
-    font-size: 20px;
+    font-size: x-large;
 }
 
 
 .challenge, #questenemyname, #questkills, #killed{
     display: inline;
-    font-size: 18px;
+    font-size: x-large;
 }
 
 .challenge{
@@ -87,7 +103,7 @@ body {
     margin: 15px;
     margin-right: 25px;
     background-color: rgba(255, 0, 0, 0.661);
-    border: 2px solid rgb(79, 0, 0);
+    border: 2px solid rgb(158, 52, 52);
     padding: 10px;
     max-width: 50%;
 }
@@ -108,6 +124,7 @@ body {
     background-position: center;
     border-radius: 15px;
     padding: 10px;
+    margin-bottom: 15vh;
 }
 
 .enemymodel img {
@@ -135,11 +152,12 @@ body {
     min-height: 30%;
     border-radius: 15px;
     background-color: #B88566;
-    border: 3px solid rgb(79, 0, 0);
+    border: 3px solid #271002;
     height: auto;
     margin-bottom: 13%;
+    font-size: x-large;
+    padding-top: 0px;
 }
-
 
 .spells img{
     max-width: 7vh;
@@ -151,15 +169,12 @@ body {
 #spells img:hover{
     animation-name: scalingTime;
     animation-duration: 0.5s;
-    /*makes it so the animation doesn't loop*/
     animation-fill-mode: forwards;
 }
-
 
 @keyframes scalingTime{
     100%{transform: scale(1.2);}
 }
-
 
 .right {
     color: white;
@@ -182,9 +197,18 @@ body {
     min-height: 30%;
     border-radius: 15px;
     background-color: #B88566;
-    border: 3px solid rgb(79, 0, 0);
+    border: 3px solid #271002;
     min-height: 150px;
     margin-bottom: 13%;
+    font-size: x-large;
+}
+
+#party p{
+    margin: 0px; padding: 0px;
+}
+
+#party h1{
+    margin: 0px; padding-top: 20px;
 }
 
 /* Media Queries */
@@ -222,14 +246,13 @@ body {
     border-radius: 15px;
     text-align: center;
     justify-content: center;
-    border: 3px solid #491D04;
-    font-size: 2.5vh;
-    /* text-shadow: -3px -3px 0 #000, 3px -3px 0 #000, -3px 3px 0 #000, 3px 3px 0 #000; */
+    border: 3px solid #271002;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
     color: white;
-    padding: 1.5vh;
-    margin-left: 15px;
-
-   transition: background-color 0.25s;
+    padding: 1vh;
+    margin-bottom: 15px;
+    transition: background-color 0.25s;
+    font-size: 3vh;
 }
 
 #menu{
