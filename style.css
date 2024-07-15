@@ -128,19 +128,19 @@ body {
 }
 
 .enemymodel img {
-    max-width: 25vh;
+    max-width: 35vh;
     max-height: auto;
-    min-width: 25vh;
+    min-width: 35vh;
     min-height: auto;
     border-radius: 15px;
     padding: 10px;
-    margin-bottom: 10vh;
+    margin-bottom: -3vh;
 }
 
 .enemymodel img.bigger {
-    max-width: 50vh;
+    max-width: 65vh;
     max-height: auto;
-    min-width: 50vh;
+    min-width: 65vh;
     min-height: auto;
 }
 
@@ -193,8 +193,7 @@ body {
     padding-left: 1vh;
     padding-bottom: 1vh;
     width: 90%;
-    min-width: 150px;
-    min-height: 30%;
+    min-width: 280px;
     border-radius: 15px;
     background-color: #B88566;
     border: 3px solid #271002;
@@ -276,4 +275,8 @@ body {
     display: flex;
     justify-content: flex-end;
     align-content: flex-end;
+}
+
+#buydmg :hover{
+    cursor:move;
 }

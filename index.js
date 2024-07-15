@@ -3,7 +3,7 @@ let previoushealthbar = 2;
 let playerdamage = 1;
 let saveplayerdamage;
 let critchance = 1;
-let gold = 0;
+let gold = 300;
 let goldgain;
 let xp = 0;
 let kills = 0;
@@ -13,6 +13,7 @@ let enemyArray;
 let randomSlime = 0;
 let xpNeeded = 50;
 let level = 1;
+let passivedamage = 0;
 
 // Load saved xp and gold from localStorage
 if (localStorage.getItem("xp")) {
@@ -30,7 +31,9 @@ if (localStorage.getItem("healthbar")) {
 if (localStorage.getItem("playerdamage")) {
     playerdamage = parseInt(localStorage.getItem("playerdamage"), 10);
 }
-
+if (localStorage.getItem("passivedamage")) {
+    passivedamage = parseInt(localStorage.getItem("passivedamage"), 10);
+}
 
 //removes all chars after the last / and removes all chars after the first .
 function enemyStringCleaner(text) {
@@ -63,6 +66,8 @@ function enemyStringCleaner(text) {
 document.getElementById("xp").textContent = xp;
 document.getElementById("gold").textContent = gold;
 document.getElementById("healthbar").textContent = healthbar;
+document.getElementById("dmg").textContent = playerdamage;
+document.getElementById("passivedmg").textContent = passivedamage;
 
 function levelUp(lvlxp){
     if(lvlxp >= xpNeeded){
@@ -72,6 +77,7 @@ function levelUp(lvlxp){
         xpNeeded *= 1.05;
         xpNeeded = Math.trunc(xpNeeded);
         document.getElementById("level").textContent = level;
+        document.getElementById("dmg").textContent = Math.trunc(playerdamage);
     }
 }
 
@@ -152,6 +158,9 @@ function calccritchance() {
 
 //function for the onclick event
 function enemyClickHandler() {
+    
+    document.getElementById("dmg").textContent = Math.trunc(playerdamage);
+
     if (healthbar > 0) {
         const crithit = calccritchance();
         localStorage.setItem("playerdamage", playerdamage);
@@ -191,7 +200,7 @@ function handleEnemyDefeat() {
     enemies.meadowenemies.push(slimeEnemies[randomSlime], 'pic/enemies/gobby.gif');
     
     if (healthbar <= 0) {
-        previoushealthbar *= 1.05;
+        previoushealthbar *= 1.02;
         localStorage.setItem("healthbar", healthbar);
         localStorage.setItem("previoushealthbar", previoushealthbar);
         healthbar = Math.ceil(previoushealthbar);
@@ -212,7 +221,7 @@ function handleEnemyDefeat() {
         }
 
         //player gains gold
-        goldgain = Math.trunc(Math.random() * 6) + 1;
+        goldgain = Math.trunc(Math.random() * 3) + 1;
         gold += goldgain;
         document.getElementById("gold").textContent = gold;
         document.getElementById("goldgain").textContent = "Gold gained: +" + goldgain;
@@ -276,7 +285,7 @@ function quests(enemy) {
     document.getElementById("questenemyname").textContent = questenemy + "s";
     document.getElementById("questkills").textContent = questkill;
     document.getElementById("challengekillsneeded").textContent = killsneeded;
-    document.getElementById("questnum").textContent = "#" + Number(questscomplete+1) + ": ";
+    document.getElementById("questnum").textContent = "#" + questnum + ": ";
     let questEnemyContain = enemy.includes(questenemy);
 
     if (questEnemyContain === true) {
@@ -340,3 +349,32 @@ async function printy(healthbar){
 document.getElementById("poison").onclick = function(){
     document.getElementById("healthbar").textContent = printy(healthbar);
 }
+
+document.getElementById("buydmg").onclick = function(){
+    if(gold >= 50){
+        playerdamage *= 1.2;
+        gold -= 50;
+        document.getElementById("gold").textContent = gold;
+        document.getElementById("dmg").textContent = Math.trunc(playerdamage);
+    }
+}
+
+document.getElementById("hiremember").onclick = function(){
+    if(gold >= 250){
+        passivedamage += 2;
+        localStorage.setItem("passivedamage", passivedamage);
+        gold -= 250;
+        document.getElementById("gold").textContent = gold;
+        document.getElementById("passivedmg").textContent = Math.trunc(passivedamage);
+    }
+}
+
+function decreaseNumber() {
+    healthbar -= passivedamage;
+    if(healthbar <= 0){
+        handleEnemyDefeat();
+    }
+    document.getElementById("healthbar").innerText = Math.trunc(healthbar);
+}
+
+setInterval(decreaseNumber, 1000);
