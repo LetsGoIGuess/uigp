@@ -13,7 +13,7 @@ let enemyArray;
 let randomSlime = 0;
 let xpNeeded = 50;
 let level = 1;
-let passivedamage = 0;
+let passivedamage = 1;
 
 // Load saved xp and gold from localStorage
 if (localStorage.getItem("xp")) {
@@ -158,10 +158,10 @@ function calccritchance() {
 
 //function for the onclick event
 function enemyClickHandler() {
-    
+
     document.getElementById("dmg").textContent = Math.trunc(playerdamage);
 
-    if (healthbar > 0) {
+    if (healthbar > 1) {
         const crithit = calccritchance();
         localStorage.setItem("playerdamage", playerdamage);
         //if the critical hit chance succeeds, we multiply the playerdamage variable
@@ -188,6 +188,7 @@ function enemyClickHandler() {
     }
     else{
         console.log("ERROR: enemy health was below 0")
+        healthbar -= playerdamage;
         handleEnemyDefeat();
         document.getElementById("healthbar").textContent = Math.trunc(healthbar);
     }
@@ -199,8 +200,8 @@ function handleEnemyDefeat() {
     randomSlime = Math.floor(Math.random() * slimeEnemies.length);
     enemies.meadowenemies.push(slimeEnemies[randomSlime], 'pic/enemies/gobby.gif');
     
-    if (healthbar <= 0) {
-        previoushealthbar *= 1.02;
+    if (healthbar <= 1) {
+        previoushealthbar *= 1.05;
         localStorage.setItem("healthbar", healthbar);
         localStorage.setItem("previoushealthbar", previoushealthbar);
         healthbar = Math.ceil(previoushealthbar);
@@ -371,7 +372,7 @@ document.getElementById("hiremember").onclick = function(){
 
 function decreaseNumber() {
     healthbar -= passivedamage;
-    if(healthbar <= 0){
+    if(healthbar <= 0.9){
         handleEnemyDefeat();
     }
     document.getElementById("healthbar").innerText = Math.trunc(healthbar);
