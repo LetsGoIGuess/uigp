@@ -3,7 +3,7 @@ let previoushealthbar = 2;
 let playerdamage = 1;
 let saveplayerdamage;
 let critchance = 1;
-let gold = 300;
+let gold = 500;
 let goldgain;
 let xp = 0;
 let kills = 0;
@@ -13,7 +13,8 @@ let enemyArray;
 let randomSlime = 0;
 let xpNeeded = 50;
 let level = 1;
-let passivedamage = 1;
+let passivedamage = 0;
+let slot = false;
 
 // Load saved xp and gold from localStorage
 if (localStorage.getItem("xp")) {
@@ -107,7 +108,8 @@ const slimeEnemies = ['pic/slime/black_slime.gif',
     'pic/slime/purple_slime.gif',
     'pic/slime/red_slime.gif',
     'pic/slime/slime.gif',
-    'pic/slime/yellow_slime.gif' ]
+    'pic/slime/yellow_slime.gif' 
+]
 
 // Global object to store enemies for each area
 const enemies = {
@@ -158,10 +160,10 @@ function calccritchance() {
 
 //function for the onclick event
 function enemyClickHandler() {
-
+    
     document.getElementById("dmg").textContent = Math.trunc(playerdamage);
 
-    if (healthbar > 1) {
+    if (healthbar > 0) {
         const crithit = calccritchance();
         localStorage.setItem("playerdamage", playerdamage);
         //if the critical hit chance succeeds, we multiply the playerdamage variable
@@ -188,7 +190,6 @@ function enemyClickHandler() {
     }
     else{
         console.log("ERROR: enemy health was below 0")
-        healthbar -= playerdamage;
         handleEnemyDefeat();
         document.getElementById("healthbar").textContent = Math.trunc(healthbar);
     }
@@ -200,8 +201,8 @@ function handleEnemyDefeat() {
     randomSlime = Math.floor(Math.random() * slimeEnemies.length);
     enemies.meadowenemies.push(slimeEnemies[randomSlime], 'pic/enemies/gobby.gif');
     
-    if (healthbar <= 1) {
-        previoushealthbar *= 1.05;
+    if (healthbar <= 0) {
+        previoushealthbar *= 1.02;
         localStorage.setItem("healthbar", healthbar);
         localStorage.setItem("previoushealthbar", previoushealthbar);
         healthbar = Math.ceil(previoushealthbar);
@@ -221,11 +222,30 @@ function handleEnemyDefeat() {
             document.getElementById("enemysprite").classList.remove('bigger'); // Remove the bigger class if it exists
         }
 
-        //player gains gold
-        goldgain = Math.trunc(Math.random() * 3) + 1;
-        gold += goldgain;
-        document.getElementById("gold").textContent = gold;
-        document.getElementById("goldgain").textContent = "Gold gained: +" + goldgain;
+        //player gains gold from enemy (non-slot)
+        if(slot == false){
+            goldgain = Math.trunc(Math.random() * 6) + 1;
+            gold += goldgain;
+            document.getElementById("gold").textContent = gold;
+            document.getElementById("goldgain").textContent = "Gold gained: +" + goldgain;
+        }
+
+        //player gains gold from beating slot machine
+        if(slot == true){
+            goldgain = 100;
+            gold += goldgain;
+            document.getElementById("gold").textContent = gold;
+            document.getElementById("goldgain").textContent = "Gold gained: +" + goldgain;
+            slot = false;
+
+            fireball = true;
+            document.getElementById("fireball").style.filter = "brightness(100%)";
+            frogs = true;
+            document.getElementById("frog").style.filter = "brightness(100%)";
+            strength = true;
+            document.getElementById("strength").style.filter = "brightness(100%)";
+        }
+
 
         //save gold to localStorage
         localStorage.setItem("gold", gold);
@@ -307,60 +327,229 @@ function quests(enemy) {
 // When the player clicks we run this function
 document.getElementById("enemysprite").onclick = enemyClickHandler;
 
+// Sets spells to be false / player has to purchase spells 
+let fireball = false;
+let frogs = false;
+let strength = false;
+let slots = false;
+
+
+if(fireball == false){
+    document.getElementById("fireball").style.filter = "brightness(0%)";
+}
+
+else if(fireball == true){
+    document.getElementById("fireball").style.filter = "brightness(100%)";
+}
+
+
+
+if(frogs == false){
+    document.getElementById("frog").style.filter = "brightness(0%)";
+}
+
+else if(frogs == true){
+    document.getElementById("frog").style.filter = "brightness(100%)";
+}
+
+
+
+if(strength == false){
+    document.getElementById("strength").style.filter = "brightness(0%)";
+}
+
+else if(strength == true){
+    document.getElementById("strength").style.filter = "brightness(100%)";
+}
+
+
+
+if(slots == false){
+    document.getElementById("slot").style.filter = "brightness(0%)";
+}
+
+else if(slots == true){
+    document.getElementById("slot").style.filter = "brightness(100%)";
+}
+
+
+
+
+
+function fireballTrue(){
+    fireball = true;
+    document.getElementById("fireball").style.filter = "brightness(100%)";
+}
+
 document.getElementById("fireball").onclick = function() {
-    healthbar -= 50;
-    handleEnemyDefeat();
-    document.getElementById("healthbar").textContent = Math.trunc(healthbar);
+
+    if(fireball == true){
+        healthbar -= 50;
+        handleEnemyDefeat();
+        document.getElementById("healthbar").textContent = Math.trunc(healthbar);
+        document.getElementById("fireball").style.filter = "brightness(60%)";
+        fireball = false;
+        setTimeout(fireballTrue, 5000); //cooldown for the fireball spell
+    }
+
+}
+
+
+function frogTrue(){
+    frogs = true;
+    document.getElementById("frog").style.filter = "brightness(100%)";
 }
 
 document.getElementById("frog").onclick = function() {
-    healthbar = 1;
-    prevenemy = document.getElementById("enemysprite").src;
-    document.getElementById("enemysprite").src = 'pic/frog.png';
-    document.getElementById("healthbar").textContent = Math.trunc(healthbar);
+
+    if(frogs == true){
+        healthbar = 1;
+        prevenemy = document.getElementById("enemysprite").src;
+        document.getElementById("enemysprite").src = 'pic/frog.png';
+        document.getElementById("healthbar").textContent = Math.trunc(healthbar);
+        document.getElementById("frog").style.filter = "brightness(60%)";
+        frogs = false;
+        setTimeout(frogTrue, 5000); //cooldown for the frog spell
+    }
 }
 
-//function for delay in loop for poison spells
-function waitforme(ms){
 
-    return new Promise (resolve =>{
 
-        setTimeout(()=> {resolve('')}, ms);
-    })
+//returns player damage to 1 after 10 seconds of using the strength potion
+function strengthDone(){
+    document.getElementById("strength").style.filter = "brightness(100%)";
+    playerdamage /= 1.5;
 }
 
-async function printy(healthbar){
+document.getElementById("strength").onclick = function() {
 
-    for(let i = 0; i < 3; i++){
-        
-        if(healthbar <= 0){
-            i == 3;
-            return healthbar;
+    if(strength == true){
+        playerdamage *= 1.5;
+        document.getElementById("strength").style.filter = "brightness(60%)";
+        strength = false;
+        setTimeout(strengthDone, 10000); //cooldown for the strength spell
+    }
+}
+
+
+
+function slotTrue(){ //slot potion cooldown ready 
+    slots = true;
+    document.getElementById("slot").style.filter = "brightness(100%)";
+}
+
+document.getElementById("slot").onclick = function(){
+
+    if(slots == true){
+        healthbar = healthbar *= 1.5;
+        prevenemy = document.getElementById("enemysprite").src;
+        document.getElementById("enemysprite").src = 'pic/enemies/moneymachine.gif';
+        document.getElementById("healthbar").textContent = Math.trunc(healthbar);
+        slot = true;
+        slots = false;
+        document.getElementById("slot").style.filter = "brightness(60%)";
+
+        //other spells are disabled (temporary)
+        if(slot == true){
+            fireball = false;
+            document.getElementById("fireball").style.filter = "brightness(60%)";
+            frogs = false;
+            document.getElementById("frog").style.filter = "brightness(60%)";
+            strength = false;
+            document.getElementById("strength").style.filter = "brightness(60%)";
         }
-
-        await waitforme(500);
-        healthbar -= 25;
-        document.getElementById("healthbar").textContent = Math.trunc(healthbar);   
     }
 
-    return healthbar;
+        setTimeout(slotTrue, 120000); //cooldown for the slot spell
 }
 
 
-document.getElementById("poison").onclick = function(){
-    document.getElementById("healthbar").textContent = printy(healthbar);
+//sets the shop options to be available
+let buyDmg = true;
+let buyMem = true;
+let buySpell = true;
+
+
+//function shows popup stating the player doesn't have enough gold for purcahsing
+function unblur(){
+    document.getElementById("popup").style.visibility = "hidden";
+    document.getElementById("spells").style.filter = "blur(0px)";
+    document.getElementById("quests").style.filter = "blur(0px)";
+    document.getElementById("goldbox").style.filter = "blur(0px)";
+    document.getElementById("shop").style.filter = "blur(0px)";
+
+
+    if(fireball == true){
+        document.getElementById("fireball").style.filter = "brightness(100%)";
+    }
+
+    if(frogs == true){
+        document.getElementById("frog").style.filter = "brightness(100%)";
+    }
+
+    if(strength == true){
+        document.getElementById("strength").style.filter = "brightness(100%)";
+    }
+
+    if(slots == true){
+        document.getElementById("slot").style.filter = "brightness(100%)";
+    }
+
+
+    buyDmg = true;
+    buyMem = true
+    buySpell = true;
 }
 
-document.getElementById("buydmg").onclick = function(){
+
+//function shows the popup for not having enough gold / boxes are blurred
+function blurs(){
+    document.getElementById("popup").style.visibility = "visible";
+    document.getElementById("spells").style.filter = "blur(8px)";
+    document.getElementById("quests").style.filter = "blur(8px)";
+    document.getElementById("goldbox").style.filter = "blur(8px)";
+    document.getElementById("shop").style.filter = "blur(8px)";
+
+    
+    if(fireball == true){
+        document.getElementById("fireball").style.filter = "brightness(60%)";
+    }
+
+    if(frogs == true){
+        document.getElementById("frog").style.filter = "brightness(60%)";   
+    }
+
+    if(strength == true){
+        document.getElementById("strength").style.filter = "brightness(60%)";
+    }
+
+
+    if(slots == true){
+        document.getElementById("slot").style.filter = "brightness(60%)";
+    }
+
+    buyDmg = false;
+    buyMem = false;
+    buySpell = false;
+}
+
+
+
+document.getElementById("buyDamage").onclick = function(){
     if(gold >= 50){
-        playerdamage *= 1.2;
+        playerdamage *= 1.5;
         gold -= 50;
         document.getElementById("gold").textContent = gold;
         document.getElementById("dmg").textContent = Math.trunc(playerdamage);
     }
+
+    else if(gold < 50){
+        blurs();
+        setInterval(unblur, 5000);
+    }
 }
 
-document.getElementById("hiremember").onclick = function(){
+document.getElementById("hireMember").onclick = function(){
     if(gold >= 250){
         passivedamage += 2;
         localStorage.setItem("passivedamage", passivedamage);
@@ -368,14 +557,101 @@ document.getElementById("hiremember").onclick = function(){
         document.getElementById("gold").textContent = gold;
         document.getElementById("passivedmg").textContent = Math.trunc(passivedamage);
     }
+
+    else if(gold < 50){
+        blurs();
+        setInterval(unblur, 5000);
+    }
 }
 
 function decreaseNumber() {
     healthbar -= passivedamage;
-    if(healthbar <= 0.9){
+    if(healthbar <= 0){
         handleEnemyDefeat();
     }
     document.getElementById("healthbar").innerText = Math.trunc(healthbar);
 }
 
 setInterval(decreaseNumber, 1000);
+
+
+
+let fireballPurchased = false;
+let frogPurchased = false;
+
+
+document.getElementById("buySpell").onclick = function(){
+
+    if(buySpell == true){
+        document.getElementById("spellsPopup").style.visibility = "visible";
+    }
+
+    else if(buySpell == false){
+        document.getElementById("spellsPopup").style.visibility = "hidden";
+    }
+
+}
+
+
+document.getElementById("exit").onclick = function(){
+    document.getElementById("spellsPopup").style.visibility = "hidden";
+}
+
+
+//fireball spell purchase
+document.getElementById("fireball_buy").onclick = function(){
+
+
+    if(fireballPurchased == false){
+        document.getElementById("spellsPopup").style.visibility = "hidden";
+        document.getElementById("spellInfo").style.visibility = "visible";
+    
+        document.getElementById("spellImg").style.backgroundImage = "url('pic/fireball.jpg')";
+        document.getElementById("spellName").textContent = "Fireball Potion";
+        document.getElementById("spellDesc").textContent = "The Fireball Potion";
+    
+        
+        document.getElementById("spellPurchase").onclick = function(){
+    
+    
+    
+            if(gold < 500){
+                document.getElementById("spellInfo").style.visibility = "hidden";
+                document.getElementById("popup").style.visibility = "visible";
+                blurs();
+                setInterval(unblur, 5000);
+            }
+        
+            else if(gold >= 500){
+    
+                gold -= 500;
+                document.getElementById("gold").textContent = gold;
+                fireball = true;
+                document.getElementById("fireball").style.filter = "brightness(100%)";
+                fireballPurchased = true;
+                document.getElementById("fireball_buy").style.filter = "brightness(70%)";
+                document.getElementById("fireball_buy").style.cursor = "default";
+    
+                document.getElementById("spellInfo").style.visibility = "hidden";
+                document.getElementById("spellsPopup").style.visibility = "visible";
+                
+            }
+            
+        }
+    }
+
+
+}
+
+
+
+
+
+
+
+
+
+document.getElementById("spellCancel").onclick = function(){
+    document.getElementById("spellsPopup").style.visibility = "visible";
+    document.getElementById("spellInfo").style.visibility = "hidden";
+}
