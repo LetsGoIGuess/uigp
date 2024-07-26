@@ -5,7 +5,7 @@
 
 
 body {
-    background-image: url(pic/backgrounds/meadow.png);
+    background-image: url(pic/backgrounds/meadow.jpeg);
     background-repeat: no-repeat;
     background-size: cover;
     color: white;
@@ -154,16 +154,17 @@ body {
     background-color: #B88566;
     border: 3px solid #271002;
     height: auto;
-    margin-bottom: 13%;
+    margin-bottom: 10%;
     font-size: x-large;
     padding-top: 0px;
 }
 
 .spells img{
     max-width: 7vh;
-    padding: 1vh;
-    margin-left: 3%;
-    margin-top: -2%;
+    padding-left: 2vh;
+    padding-bottom: 1vh;
+    margin-left: 1%;
+    margin-top: -5%;
 }
 
 #spells img:hover{
@@ -189,9 +190,9 @@ body {
     margin-right: -1%;
 }
 
-#party{
+#shop{
     padding-left: 1vh;
-    padding-bottom: 1vh;
+    padding-bottom: 2vh;
     width: 90%;
     min-width: 280px;
     border-radius: 15px;
@@ -202,11 +203,11 @@ body {
     font-size: x-large;
 }
 
-#party p{
+#shop p{
     margin: 0px; padding: 0px;
 }
 
-#party h1{
+#shop h1{
     margin: 0px; padding-top: 20px;
 }
 
@@ -277,6 +278,158 @@ body {
     align-content: flex-end;
 }
 
-#buydmg :hover{
-    cursor:move;
+#buyDamage:hover{
+    cursor: pointer;
+    color: red;
+    transition: 0.4s;
+}
+
+#hireMember:hover{
+    cursor: pointer;
+    color: red;
+    transition: 0.4s;
+}
+
+#buySpell:hover{
+    cursor: pointer;
+    color: red;
+    transition: 0.4s;
+}
+
+#popup{
+    width: 300px;
+    height: 100px;
+    background-color: #B88566;
+    border: 3px solid #271002;
+    border-radius: 15px;
+    position: fixed;
+    margin-top: -150px;
+    text-align: center;
+    font-size: x-large;
+    visibility: hidden;
+}
+
+#spellsPopup{
+    width: 400px;
+    height: 200px;
+    background-color: #B88566;
+    border: 3px solid #271002;
+    border-radius: 15px;
+    position: fixed;
+    margin-top: -200px;
+    text-align: center;
+    font-size: x-large;
+    visibility: hidden;
+}
+
+#spellsPopup img{
+    max-width: 9vh;
+    max-height: 9vh;
+    padding-left: 3vh;
+    padding-bottom: 1vh;
+    margin-left: 0%;
+    margin-top: 0%;
+}
+
+#spellsPopup img:hover{
+    filter: brightness(70%);
+}
+
+#spellbox{
+    margin-left: -20px;
+}
+
+#exit{
+    position: absolute;
+    margin-left: 350px;
+    margin-top: -100px;
+    font-size: 30px;
+    background-color: red;
+    width: 35px;
+    height: 28px;
+}
+
+#exit:hover {
+    filter: brightness(60%);
+    cursor: pointer;
+}
+
+
+#spellInfo{
+    width: 450px;
+    height: 350px;
+    background-color: #B88566;
+    border: 3px solid #271002;
+    border-radius: 15px;
+    position: fixed;
+    margin-top: -150px;
+    text-align: center;
+    font-size: x-large;
+    visibility: hidden;
+}
+
+#spellImg{
+    width: 85px;
+    height: 85px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: absolute;
+    margin-top: 30px;
+    margin-left: 20px;
+    background-color: #000;
+}
+
+#spellName{
+    margin-top: 5vh;
+    font-size: 50px;
+    margin-left: 125px;
+    width: 300px;
+    height: 70px;
+    text-align: left;
+}
+
+#spellDesc{
+    width: 400px;
+    height: 100px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: absolute;
+    margin-top: -10px;
+    margin-left: 20px;
+    background-color: #765039;
+    border: 3px solid #271002;
+}
+
+#spellPurchase{
+    width: 100px;
+    height: 70px;
+    position: absolute;
+    margin-top: 110px;
+    margin-left: 250px;
+    background-color:rgb(19, 190, 19);
+    border: 3px solid #271002;
+    text-align: center;
+    font-size: 25px;
+}
+
+#spellPurchase:hover{
+    filter: brightness(70%);
+    cursor: pointer;
+}
+
+#spellCancel{
+    width: 100px;
+    height: 70px;
+    position: absolute;
+    margin-top: 110px;
+    margin-left: 80px;
+    background-color: red;
+    border: 3px solid #271002;
+    text-align: center;
+    font-size: 25px;
+}
+
+#spellCancel:hover{
+    filter: brightness(70%);
+    cursor: pointer;
 }
